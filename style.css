@@ -11,6 +11,8 @@ html {
 section {
     height: 100vh;
     width: 100%;
+    position: relative;
+    overflow-x: hidden;
 }
 .slider {
     height: 100%;
@@ -23,20 +25,56 @@ section {
     align-items: center;
     justify-content: center;
     position: absolute;
+    /* z-index: -1; */
+    background-size: cover;
+    transform: translateX(100%);
+}
+.slide.active {
+    transform: translateX(0%);
 }
 .slide::after{
-    contain: '';
+    content: '';
     position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.671);
+    z-index: -1;
 }
-.slider-1 {
+.slide-1 {
     background-image: url('./img/img-1.jpeg');
 }
-.slider-2 {
+.slide-2 {
     background-image: url('./img/img-2.jpeg');
 }
-.slider-3 {
+.slide-3 {
     background-image: url('./img/img-3.jpeg');
 }
-.slider-4 {
+.slide-4 {
     background-image: url('./img/img-4.jpeg');
+}
+
+/* buttons style */
+
+.buttons {
+    position: absolute;
+    z-index: 5;
+    bottom: 0;
+    right: 0;
+    height: auto;
+    color: black;
+    display: flex;
+    flex-direction: row-reverse;
+    width: auto;
+    font-size: 50px;
+}
+.buttons div {
+    cursor: pointer;
+    pointer-events: all;
+    padding: 15px;
+    background-color:rgba(255, 255, 255, 0.315);
+}
+.buttons div:hover {
+    background-color: white;
 }
