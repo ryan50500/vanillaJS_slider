@@ -21,4 +21,44 @@ function getNextPrev(){
     return [next, prev]
 }
 
-getNextPrev();
+function getPosition(){
+    const activeSlide = document.querySelector('.slide.active');
+    const activeIndex = slides.indexOf(activeSlide);
+    const [next, prev] = getNextPrev();
+
+    slides.forEach((slide, index) => {
+        if(index === activeIndex) {
+            slide.style.transform = 'translateX(0)';
+        }else if(slide === prev) {
+            slide.style.transform = 'translateX(-100%)';
+        }else if(slide === next) {
+            slide.style.transform = 'translateX(100%)';
+        }else{
+            slide.style.transform = 'translateX(100%)';
+        }
+    })
+}
+getPosition();
+
+buttons.forEach(button => {
+    button.addEventListener('click', () => {
+        if(button.classList.contains('next')) getNextSlide();
+        else if(button.classList.contains('prev')) getPrevSlide();
+    })
+});
+
+function getNextSlide() {
+    const current = document.querySelector('.slide.active');
+    const [next, prev] = getNextPrev();
+
+    current.classList.add('top');
+    next.classList.add('top');
+    current.classList.remove('active');
+    current.style.transform = 'translate(-100%)';
+    next.classList.add('active');
+    next.style.transform = 'translate(0)';
+}
+function getPrevSlide() {
+    console.log('getting previous slide');
+}
+

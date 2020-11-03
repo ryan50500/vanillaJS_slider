@@ -25,12 +25,16 @@ section {
     align-items: center;
     justify-content: center;
     position: absolute;
-    /* z-index: -1; */
+    z-index: -1;
     background-size: cover;
     transform: translateX(100%);
 }
 .slide.active {
     transform: translateX(0%);
+}
+.slide.top{
+    transition: .3s ease transform;
+    z-index: 3;
 }
 .slide::after{
     content: '';
