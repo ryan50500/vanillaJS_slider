@@ -1,6 +1,7 @@
 const slides = Array.from(document.querySelectorAll('.slide'));
 const slider = document.querySelector('.slider');
 const buttons = document.querySelectorAll('.buttons div');
+const dotEl = document.querySelector('.dots');
 
 function getNextPrev(){
     const activeSlide = document.querySelector('.slide.active');
@@ -36,6 +37,10 @@ function getPosition(){
         }else{
             slide.style.transform = 'translateX(100%)';
         }
+
+        slide.addEventListener('transitionend', () => {
+            slide.classList.remove('top');
+        })
     })
 }
 getPosition();
@@ -51,14 +56,86 @@ function getNextSlide() {
     const current = document.querySelector('.slide.active');
     const [next, prev] = getNextPrev();
 
+    if(current.classList.contains('top')){
+        return;
+    }
     current.classList.add('top');
     next.classList.add('top');
     current.classList.remove('active');
     current.style.transform = 'translate(-100%)';
     next.classList.add('active');
     next.style.transform = 'translate(0)';
+    getPosition();
+    getActiveDot();
 }
 function getPrevSlide() {
-    console.log('getting previous slide');
+    const current = document.querySelector('.slide.active');
+    const [next, prev] = getNextPrev();
+
+    if(current.classList.contains('top')){
+        return;
+    }
+
+    current.classList.add('top');
+    prev.classList.add('top');
+    current.classList.remove('active');
+    current.style.transform = 'translateX(100%)';
+    prev.classList.add('active');
+    prev.style.transform = 'translate(0)';
+
+    getPosition();
+    getActiveDotPrev();
 }
 
+// dots functionality
+slides.forEach(slide => {
+    const dot = document.createElement('div');
+    dot.classList.add('dot');
+    dotEl.appendChild(dot);
+});
+
+function getActiveDot(){
+    const allDots = document.querySelectorAll('.dots .dot');
+    const activeSlide = document.querySelector('.slide.active');
+    const activeIndex = slides.indexOf(activeSlide);
+
+    const first = document.querySelector('.slide-1');
+
+    allDots[activeIndex].classList.add('active');
+
+
+    try {
+        allDots[activeIndex -1].classList.remove('active');
+    }
+   catch(err) {
+       console.log(err);
+   }
+    if (first.classList.contains('active')) {
+        document.querySelector('.dot:nth-child(4)').classList.remove('active');
+    }
+}
+
+getActiveDot();
+
+
+function getActiveDotPrev(){
+    const allDots = document.querySelectorAll('.dots .dot');
+    const activeSlide = document.querySelector('.slide.active');
+    const activeIndex = slides.indexOf(activeSlide);
+
+    const last = document.querySelector('.slide-4');
+
+    allDots[activeIndex].classList.add('active');
+
+    try {
+        allDots[activeIndex +1].classList.remove('active');
+    }
+   catch(err) {
+       console.log(err);
+   }
+    if (last.classList.contains('active')) {
+        document.querySelector('.dot:nth-child(1)').classList.remove('active');
+    }
+}
+
+getActiveDotPrev();
