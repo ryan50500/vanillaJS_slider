@@ -2,6 +2,7 @@ const slides = Array.from(document.querySelectorAll('.slide'));
 const slider = document.querySelector('.slider');
 const buttons = document.querySelectorAll('.buttons div');
 const dotEl = document.querySelector('.dots');
+let timeoutID
 
 function getNextPrev(){
     const activeSlide = document.querySelector('.slide.active');
@@ -53,6 +54,7 @@ buttons.forEach(button => {
 });
 
 function getNextSlide() {
+    clearTimeout(timeoutID);
     const current = document.querySelector('.slide.active');
     const [next, prev] = getNextPrev();
 
@@ -67,8 +69,10 @@ function getNextSlide() {
     next.style.transform = 'translate(0)';
     getPosition();
     getActiveDot();
+    autoLoop();
 }
 function getPrevSlide() {
+    clearTimeout(timeoutID);
     const current = document.querySelector('.slide.active');
     const [next, prev] = getNextPrev();
 
@@ -85,6 +89,7 @@ function getPrevSlide() {
 
     getPosition();
     getActiveDotPrev();
+    autoLoop();
 }
 
 // dots functionality
@@ -100,6 +105,9 @@ function getActiveDot(){
     const activeIndex = slides.indexOf(activeSlide);
 
     const first = document.querySelector('.slide-1');
+    const second = document.querySelector('.slide-2');
+    const third = document.querySelector('.slide-3');
+    const last = document.querySelector('.slide-4');
 
     allDots[activeIndex].classList.add('active');
 
@@ -112,6 +120,23 @@ function getActiveDot(){
    }
     if (first.classList.contains('active')) {
         document.querySelector('.dot:nth-child(4)').classList.remove('active');
+        document.querySelector('.dot:nth-child(3)').classList.remove('active');
+        document.querySelector('.dot:nth-child(2)').classList.remove('active');
+    }
+    else if (second.classList.contains('active')) {
+        document.querySelector('.dot:nth-child(4)').classList.remove('active');
+        document.querySelector('.dot:nth-child(3)').classList.remove('active');
+        document.querySelector('.dot:nth-child(1)').classList.remove('active');
+    }
+    else if (third.classList.contains('active')) {
+        document.querySelector('.dot:nth-child(4)').classList.remove('active');
+        document.querySelector('.dot:nth-child(1)').classList.remove('active');
+        document.querySelector('.dot:nth-child(2)').classList.remove('active');
+    }
+    else {
+        document.querySelector('.dot:nth-child(1)').classList.remove('active');
+        document.querySelector('.dot:nth-child(2)').classList.remove('active');
+        document.querySelector('.dot:nth-child(3)').classList.remove('active');
     }
 }
 
@@ -123,6 +148,9 @@ function getActiveDotPrev(){
     const activeSlide = document.querySelector('.slide.active');
     const activeIndex = slides.indexOf(activeSlide);
 
+    const first = document.querySelector('.slide-1');
+    const second = document.querySelector('.slide-2');
+    const third = document.querySelector('.slide-3');
     const last = document.querySelector('.slide-4');
 
     allDots[activeIndex].classList.add('active');
@@ -133,9 +161,61 @@ function getActiveDotPrev(){
    catch(err) {
        console.log(err);
    }
-    if (last.classList.contains('active')) {
-        document.querySelector('.dot:nth-child(1)').classList.remove('active');
-    }
+   if (first.classList.contains('active')) {
+    document.querySelector('.dot:nth-child(4)').classList.remove('active');
+    document.querySelector('.dot:nth-child(3)').classList.remove('active');
+    document.querySelector('.dot:nth-child(2)').classList.remove('active');
+}
+else if (second.classList.contains('active')) {
+    document.querySelector('.dot:nth-child(4)').classList.remove('active');
+    document.querySelector('.dot:nth-child(3)').classList.remove('active');
+    document.querySelector('.dot:nth-child(1)').classList.remove('active');
+}
+else if (third.classList.contains('active')) {
+    document.querySelector('.dot:nth-child(4)').classList.remove('active');
+    document.querySelector('.dot:nth-child(1)').classList.remove('active');
+    document.querySelector('.dot:nth-child(2)').classList.remove('active');
+}
+else {
+    document.querySelector('.dot:nth-child(1)').classList.remove('active');
+    document.querySelector('.dot:nth-child(2)').classList.remove('active');
+    document.querySelector('.dot:nth-child(3)').classList.remove('active');
+}
 }
 
+getActiveDotPrev()
+
+
+
+function functionalDots(){
+    const allDots = document.querySelectorAll('.dots .dot');
+    allDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            getDotSlide(index);
+        })
+    })
+}
+
+    function getDotSlide(index){
+        clearTimeout(timeoutID);
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+        slides[index].classList.add('active');
+        getPosition();
+        getActiveDot();
+        getActiveDotPrev();
+        autoLoop();
+    }
+
+    function autoLoop(){
+        timeoutID = setTimeout(() => {
+            getNextSlide();
+        }, 3000)
+    }
+
+
+getActiveDot();
 getActiveDotPrev();
+functionalDots();
+autoLoop();
